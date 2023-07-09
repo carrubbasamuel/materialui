@@ -21,6 +21,8 @@ export const fetchData = createAsyncThunk(
 
 
 const initialState = {
+    cart: [],
+    isCartOpen: false,
     data: [],
     loading: false,
     error: false,
@@ -30,6 +32,17 @@ const initialState = {
 const apiSlice = createSlice({
     name: 'api',
     initialState,
+    reducers: {
+        addCart: (state, action) => {
+            state.cart.push(action.payload);
+        },
+        toggleCart: (state) => {
+            state.isCartOpen = !state.isCartOpen;
+        },
+        removeCart: (state, action) => {
+            state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchData.pending, (state, action) => {
@@ -48,5 +61,5 @@ const apiSlice = createSlice({
 })
 
 
-export const {addData} = apiSlice.actions;
+export const {addCart, toggleCart, removeCart} = apiSlice.actions;
 export default apiSlice.reducer;

@@ -8,7 +8,6 @@ import MediaCard from "./Carta";
 
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
