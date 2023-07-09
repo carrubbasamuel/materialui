@@ -9,7 +9,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { addCart } from '../redux/api';
+import { addCart, setCurrentItem } from '../redux/api';
+import { useNavigate } from 'react-router-dom';
 
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
@@ -24,9 +25,15 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
 
 export default function MediaCard({ item }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     dispatch(addCart(item))
+  }
+
+  const handleNavigate = () => {
+    dispatch(setCurrentItem(item))
+    navigate(`/details/${item.id}`)
   }
 
 
@@ -60,7 +67,7 @@ export default function MediaCard({ item }) {
         </CardContent>
         <CardActions>
           <ButtonStyled size="small">Share</ButtonStyled>
-          <ButtonStyled size="small">Learn More</ButtonStyled>
+          <ButtonStyled onClick={handleNavigate} size="small">Details</ButtonStyled>
           <ButtonStyled sx={{
             backgroundColor: 'green',
             borderRadius: '30px',

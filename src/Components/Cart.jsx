@@ -1,7 +1,8 @@
+import Avatar from '@mui/material/Avatar';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCart, toggleCart } from '../redux/api';
+import { addCart, removeCart, toggleCart } from '../redux/api';
 
 
 import Button from '@mui/material/Button';
@@ -23,24 +24,8 @@ const style = {
     p: 4,
 };
 
-const styledBox = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    margin: '10px',
-    padding: '10px',
-    borderRadius: '30px',
-    backgroundColor: 'white',
-    color: 'black',
-    boxShadow: 3,
-    '&:hover': {
-        boxShadow: 6,
-        transition: '0.3s',
-        animationFillMode: 'forwards'
-    },
-}
 
-export default function TransitionsModal() {
+export default function ModalCart() {
     const dispatch = useDispatch();
     const { isCartOpen, cart } = useSelector(state => state.api);
     const handleClose = () => dispatch(toggleCart());
@@ -59,33 +44,69 @@ export default function TransitionsModal() {
                         timeout: 500,
                     },
                 }}
+                sx={{
+                    overflow: 'scroll',
+                }}
             >
                 <Fade in={isCartOpen}>
                     <Box sx={style}>
-                        <Typography id="transition-modal-title" variant="h6" component="h2">
+                        <Typography id="transition-modal-title" variant="h2" component="h2">
                             Cart
                         </Typography>
                         {
                             cart && cart.map(item => {
                                 return <>
 
-                                    <Button sx={{bgcolor: 'red', borderRadius: '15px'}} onClick={() => dispatch(removeCart(item))}>X</Button>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-around',
+                                        alignItems: 'center',
+                                        margin: '10px',
 
-                                    <Box sx={styledBox}>
-                                        <img src={item.images[0]} alt={item.title} style={{ width: '100px', height: '100px'}} />
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                            <Typography variant='h2'>{item.title}</Typography>
-                                            <Typography>{item.price}</Typography>
+                                    }}>
+                                        <Avatar alt="Nome immagine" src={item.images[0]} sx={{ width: 100, height: 100, borderRadius: 3 }} />
+                                        <Box >
+                                            <Typography id="transition-modal-description" sx={{ mt: 2 }} variant="h4" color='text.main' component="h2">
+                                                {item.title}
+                                            </Typography>
+                                            <Typography id="transition-modal-description" sx={{ mt: 2 }} variant="subtitle1" color='text.main' component="h2">
+                                                {item.price} $
+                                            </Typography>
+                                            <Box sx={
+                                                {
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    alignSelf: 'end',
+                                                    padding: '5px 20px',
+                                                    color: 'text.main',
+                                                    borderRadius: '30px',
+                                                    boxShadow: 3,
+                                                }
+                                            }
+                                                variant="contained"
+                                            >
+                                                <Button onClick={() => dispatch(removeCart(item))} variant="contained">-</Button>
+                                                <Typography id="transition-modal-description" sx={{ m: 2 }} variant="h5" component="h2">
+                                                    {item.amount}
+                                                </Typography>
+                                                <Button onClick={() => dispatch(addCart(item))} variant="contained">+</Button>
+                                            </Box>
+
                                         </Box>
-                                    </Box>
 
+                                    </Box>
+                                    <hr style={{margin: '20px 0'}} />
 
                                 </>
-
                             })
-                        }
 
-                    </Box>
+                        }
+                        <Typography id="transition-modal-description" sx={{ mt: 2 }} variant="h4" color='text.main' component="h2">
+                            Total: {cart.reduce((acc, item) => acc + item.price * item.amount, 0)} $
+                        </Typography>
+                        
+                    </Box >
                 </Fade>
             </Modal>
         </div>

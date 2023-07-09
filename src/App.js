@@ -1,21 +1,18 @@
-import { Box } from '@mui/system';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import ModalCart from './Components/Cart';
-import Griglia from './Components/Griglia';
-import Navbar from './Components/Navbar';
-import Header from './Components/Paper';
+
+import Home from './Pages/Home';
+import Details from './Pages/Details';
+
 
 function App() {
   return (
-    <Box >
-      <Navbar />
-      
-      <Header />
-      <ModalCart />
-      
-      <Griglia />
-    </Box>
-
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/details/:id" element={<Details/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
